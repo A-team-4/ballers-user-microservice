@@ -4,7 +4,11 @@
   "description": "user and authentication microservice for ballers app",
   "main": "server.js",
   "scripts": {
-    "test": "npm run test"
+    "test": "npm run test",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "lint": "eslint . --ext .ts"
   },
   "repository": {
     "type": "git",
