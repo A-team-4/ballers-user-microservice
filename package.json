@@ -1,0 +1,19 @@
+{
+  "name": "ballers-user-and-auth-microservice",
+  "version": "1.0.0",
+  "description": "user and authentication microservice for ballers app",
+  "main": "server.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/A-team-4/ballers-user-microservice.git"
+  },
+  "author": "A-Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/A-team-4/ballers-user-microservice/issues"
+  },
+  "homepage": "https://github.com/A-team-4/ballers-user-microservice#readme"
+}
