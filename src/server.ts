@@ -7,7 +7,7 @@ dotenv.config();
 const PORT = process.env.PORT || 3000;
 
 const app: express.Application = express();
-app.use(bodyParser.json());
+app.use(bodyParser.json()); // To parse JSON bodies
 
 //404 not found
 app.use((req: Request, res: Response) => {
