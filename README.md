@@ -11,6 +11,12 @@ This microservice handles user authentication and account management for the foo
 - CHANGE PASSWORD
 - DELETE USER
 - MANAGE JWT
+- CREATE ROLE
+- GET ROLES
+- CREATE POSITION TYPES
+- GET POSITION TYPES
+- GET USER
+- GET USERS
 
 ## Tech Stack
 
