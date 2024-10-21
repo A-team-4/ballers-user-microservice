@@ -11,7 +11,6 @@ export interface IUser extends Document {
   verified: boolean;
   bio: string;
   roleTypeId: mongoose.Types.ObjectId;
-  city: string;
-  state: string;
-  country: string;
+  stateId: mongoose.Types.ObjectId;
+  countryId: mongoose.Types.ObjectId;
 }

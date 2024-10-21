@@ -1,10 +1,20 @@
 import request from 'supertest';
-import app from '../server';
+import app from '../app';
 import { URL_NOT_FOUND } from '../constants/error-messages';
+import { IncomingMessage, Server, ServerResponse } from 'http';
 
 describe('server.ts', () => {
+  let testServer: Server<typeof IncomingMessage, typeof ServerResponse>;
+  const testPORT = 3001;
+
+  beforeAll(() => {
+    testServer = app.listen(testPORT, async () => {
+      console.log(`Listening on PORT: ${testPORT}`);
+    });
+  });
+
   afterAll(async () => {
-    app.close();
+    testServer.close();
   });
 
   describe('GET /', () => {

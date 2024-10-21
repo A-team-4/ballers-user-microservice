@@ -1,3 +1,4 @@
+/* eslint no-useless-escape: "off" */
 import mongoose, { Schema } from 'mongoose';
 import { IUser } from '../interfaces/user.interface';
 
@@ -56,17 +57,13 @@ const UserSchema = new Schema<IUser>(
       type: Schema.Types.ObjectId,
       ref: 'RoleType',
     },
-    city: {
-      type: String,
-      trim: true,
+    stateId: {
+      type: Schema.Types.ObjectId,
+      ref: 'State',
     },
-    state: {
-      type: String,
-      trim: true,
-    },
-    country: {
-      type: String,
-      trim: true,
+    countryId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Country',
     },
   },
   {

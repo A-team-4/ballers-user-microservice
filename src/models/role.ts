@@ -2,11 +2,6 @@ import mongoose, { Schema } from 'mongoose';
 import { IRoleType } from '../interfaces/role.interface';
 
 const RoleTypeSchema = new Schema<IRoleType>({
-  name: {
-    type: String,
-    required: [true, 'Role name is required'],
-    trim: true,
-  },
   type: {
     type: String,
     required: [true, 'Role type is required'],
