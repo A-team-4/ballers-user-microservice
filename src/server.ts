@@ -2,9 +2,12 @@ import * as dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import { URL_NOT_FOUND } from './constants/error-messages';
+import { connectDB } from './config/dbConnect';
 
-dotenv.config();
+dotenv.config({ path: '.env' });
 const PORT = process.env.PORT || 3000;
+
+connectDB();
 
 const app: express.Application = express();
 app.use(bodyParser.json()); // To parse JSON bodies
