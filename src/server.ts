@@ -1,21 +1,18 @@
 import * as dotenv from 'dotenv';
-import express, { Request, Response } from 'express';
-import bodyParser from 'body-parser';
-import { URL_NOT_FOUND } from './constants/error-messages';
+import { connectDB, disconnectDB } from './config/dbConfig';
+import app from './app';
 
-dotenv.config();
+dotenv.config({ path: '.env' });
 const PORT = process.env.PORT || 3000;
 
-const app: express.Application = express();
-app.use(bodyParser.json()); // To parse JSON bodies
-
-//404 not found
-app.use((req: Request, res: Response) => {
-  res.status(404).json({ error: URL_NOT_FOUND });
-});
-
-const server = app.listen(PORT, () => {
+app.listen(PORT, async () => {
+  await connectDB();
   console.log(`Listening on PORT: ${PORT}`);
 });
 
-export default server;
+// Gracefully close the connection on process termination
+process.on('SIGINT', async () => {
+  await disconnectDB();
+  console.log('MongoDB connection closed');
+  process.exit(0);
+});

@@ -21,5 +21,7 @@ jobs:
           npx lint-staged
       - name: Run Tests
         run: |
-          npm test    
+          npm test
+        env: 
+          MONGO_URI: ${{ secrets.USER_SERVICE_DB_URI }}        
       - run: echo "🍏 This job's status is ${{ job.status }}."
