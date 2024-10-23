@@ -5,6 +5,7 @@ const CountrySchema = new Schema<ICountry>({
   name: {
     type: String,
     required: [true, 'Country name is required'],
+    unique: true,
     trim: true,
   },
 });
