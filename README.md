@@ -17,6 +17,10 @@ This microservice handles user authentication and account management for the foo
 - GET POSITION TYPES
 - GET USER
 - GET USERS
+- ADD COUNTRY
+- GET COUNTRY
+- ADD STATE
+- GET STATE
 
 ## Tech Stack
 
