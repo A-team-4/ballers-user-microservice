@@ -3,13 +3,13 @@ import app from '../../../app';
 import {
   COUNTRY_CREATED_MESSAGE,
   NAME_REQUIRED,
-  testPORT,
 } from '../../../constants/contants';
 import { IncomingMessage, Server, ServerResponse } from 'http';
+import { generateRandomPortNumber } from '../../../utils/generateRandomPortNumber';
 
 describe('create-country.ts', () => {
   let testServer: Server<typeof IncomingMessage, typeof ServerResponse>;
-
+  const testPORT = generateRandomPortNumber();
   beforeAll(() => {
     testServer = app.listen(testPORT, async () => {
       //console.log(`Listening on PORT: ${testPORT}`);

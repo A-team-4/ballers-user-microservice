@@ -1,5 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import { ICountry } from '../interfaces/country.interface';
+import validator from 'validator';
 
 const CountrySchema = new Schema<ICountry>({
   name: {
@@ -7,6 +8,7 @@ const CountrySchema = new Schema<ICountry>({
     required: [true, 'Country name is required'],
     unique: true,
     trim: true,
+    set: (value: string) => validator.escape(value),
   },
 });
 

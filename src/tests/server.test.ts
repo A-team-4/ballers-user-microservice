@@ -1,11 +1,12 @@
 import request from 'supertest';
 import app from '../app';
-import { testPORT, URL_NOT_FOUND } from '../constants/contants';
+import { URL_NOT_FOUND } from '../constants/contants';
 import { IncomingMessage, Server, ServerResponse } from 'http';
+import { generateRandomPortNumber } from '../utils/generateRandomPortNumber';
 
 describe('server.ts', () => {
   let testServer: Server<typeof IncomingMessage, typeof ServerResponse>;
-
+  const testPORT = generateRandomPortNumber();
   beforeAll(() => {
     testServer = app.listen(testPORT, async () => {
       //console.log(`Listening on PORT: ${testPORT}`);
