@@ -5,9 +5,9 @@ const StateSchema = new Schema<IState>(
   {
     name: {
       type: String,
-      required: [true, 'Name is required'],
+      required: [true, 'state name is required'],
       trim: true,
-      maxlength: [50, 'Name cannot be more than 50 characters'],
+      maxlength: [50, 'state name cannot be more than 50 characters'],
     },
     countryId: {
       type: Schema.Types.ObjectId,

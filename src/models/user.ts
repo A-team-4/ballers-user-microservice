@@ -41,7 +41,7 @@ const UserSchema = new Schema<IUser>(
     },
     password: {
       type: String,
-      required: [true, 'password is required'],
+      required: [true, 'Password is required'],
       minlength: [8, 'Password must be at least 8 characters long'],
     },
     verified: {
@@ -51,7 +51,7 @@ const UserSchema = new Schema<IUser>(
     bio: {
       type: String,
       trim: true,
-      maxlength: [100, 'Name cannot be more than 50 characters'],
+      maxlength: [100, 'Bio cannot be more than 100 characters'],
     },
     roleTypeId: {
       type: Schema.Types.ObjectId,
