@@ -1,5 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import { IState } from '../interfaces/state.interface';
+import validator from 'validator';
 
 const StateSchema = new Schema<IState>(
   {
@@ -8,6 +9,7 @@ const StateSchema = new Schema<IState>(
       required: [true, 'state name is required'],
       trim: true,
       maxlength: [50, 'state name cannot be more than 50 characters'],
+      set: (value: string) => validator.escape(value),
     },
     countryId: {
       type: Schema.Types.ObjectId,
