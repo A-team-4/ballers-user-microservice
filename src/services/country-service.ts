@@ -4,8 +4,6 @@ import { CountryInput } from '../types/country';
 
 export const createCountryService = async (name: string): Promise<ICountry> => {
   const countryInput: CountryInput = { name };
-
-  const countryCreated = Country.create(countryInput);
-
+  const countryCreated = await Country.create(countryInput);
   return countryCreated;
 };
