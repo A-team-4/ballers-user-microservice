@@ -4,4 +4,3 @@ export const COUNTRY_CREATED_MESSAGE = 'Country Created Successfully';
 export const MONGO_SERVER_ERROR = 'MongoServerError';
 export const INTERNAL_SERVER_ERROR = 'Internal Server Error';
 export const MONGOOSE_DUPLICATE_ERROR_CODE = 11000;
-
