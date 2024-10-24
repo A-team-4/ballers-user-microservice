@@ -7,3 +7,8 @@ export const createCountryService = async (name: string): Promise<ICountry> => {
   const countryCreated = await Country.create(countryInput);
   return countryCreated;
 };
+
+export const getAllCountryService = async (): Promise<ICountry[]> => {
+  const countries = await Country.find();
+  return countries;
+};
