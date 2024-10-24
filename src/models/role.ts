@@ -1,11 +1,13 @@
 import mongoose, { Schema } from 'mongoose';
 import { IRoleType } from '../interfaces/role.interface';
+import validator from 'validator';
 
 const RoleTypeSchema = new Schema<IRoleType>({
   type: {
     type: String,
     required: [true, 'Role type is required'],
     trime: true,
+    set: (value: string) => validator.escape(value),
   },
 });
 

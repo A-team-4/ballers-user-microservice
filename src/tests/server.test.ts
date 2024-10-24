@@ -1,20 +1,21 @@
 import request from 'supertest';
 import app from '../app';
-import { URL_NOT_FOUND } from '../constants/error-messages';
+import { URL_NOT_FOUND } from '../constants/contants';
 import { IncomingMessage, Server, ServerResponse } from 'http';
+import { generateRandomPortNumber } from '../utils/generateRandomPortNumber';
 
 describe('server.ts', () => {
   let testServer: Server<typeof IncomingMessage, typeof ServerResponse>;
-  const testPORT = 3001;
-
+  const testPORT = generateRandomPortNumber();
   beforeAll(() => {
     testServer = app.listen(testPORT, async () => {
-      console.log(`Listening on PORT: ${testPORT}`);
+      //console.log(`Listening on PORT: ${testPORT}`);
     });
   });
 
   afterAll(async () => {
     testServer.close();
+    testServer.closeAllConnections();
   });
 
   describe('GET /', () => {
@@ -23,7 +24,7 @@ describe('server.ts', () => {
 
       expect(response.body).toEqual(
         expect.objectContaining({
-          error: URL_NOT_FOUND,
+          message: URL_NOT_FOUND,
         }),
       );
     });
