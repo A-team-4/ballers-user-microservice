@@ -12,3 +12,8 @@ export const getAllCountryService = async (): Promise<ICountry[]> => {
   const countries = await Country.find();
   return countries;
 };
+
+export const deleteCountryService = async (id: string): Promise<void> => {
+  await Country.findByIdAndDelete(id);
+  return;
+};

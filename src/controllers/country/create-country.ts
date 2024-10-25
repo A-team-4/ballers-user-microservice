@@ -21,7 +21,7 @@ export const createCountryController = async (
 
   try {
     await createCountryService(name);
-    res.status(200).json({ message: COUNTRY_CREATED_MESSAGE });
+    res.status(201).json({ message: COUNTRY_CREATED_MESSAGE });
     return;
   } catch (e: unknown) {
     apiErrorHandler(e, res);
