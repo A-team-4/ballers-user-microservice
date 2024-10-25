@@ -1,7 +1,7 @@
 import request from 'supertest';
 import app from '../../../app';
 import {
-  COUNTRY_RETRIEVED_SUCCESSFUL,
+  SUCCESS_MESSAGE,
   INTERNAL_SERVER_ERROR,
 } from '../../../constants/contants';
 import { IncomingMessage, Server, ServerResponse } from 'http';
@@ -36,7 +36,7 @@ describe('get-country.ts', () => {
       const response = await request(app).get(`/api/country`).expect(200);
 
       expect(response.body).toEqual({
-        message: COUNTRY_RETRIEVED_SUCCESSFUL,
+        message: SUCCESS_MESSAGE,
         data: [],
       });
     });
@@ -54,7 +54,7 @@ describe('get-country.ts', () => {
       const response = await request(app).get(`/api/country`).expect(200);
 
       expect(response.body).toEqual({
-        message: COUNTRY_RETRIEVED_SUCCESSFUL,
+        message: SUCCESS_MESSAGE,
         data: mockCountries,
       });
     });
