@@ -13,6 +13,13 @@ export const getAllCountryService = async (): Promise<ICountry[]> => {
   return countries;
 };
 
+export const getCountryByIdService = async (
+  id: string,
+): Promise<ICountry | null> => {
+  const country = await Country.findById(id);
+  return country;
+};
+
 export const deleteCountryService = async (id: string): Promise<void> => {
   await Country.findByIdAndDelete(id);
   return;
