@@ -3,6 +3,7 @@ import {
   deleteCountryService,
   getAllCountryService,
   updateCountryService,
+  getCountryByIdService,
 } from '../../services/country-service';
 import { Country } from '../../models/country';
 
@@ -40,6 +41,23 @@ describe('getAllCountriesService', () => {
     // Assert: Check if the service returns the correct data
     expect(result).toEqual(mockCountries);
     expect(Country.find).toHaveBeenCalledTimes(1);
+  });
+});
+
+// Test get country by ID service
+describe('getCountryByIdService', () => {
+  const mockCountryId = 'aabbs';
+  const mockCountry = { _id: mockCountryId, name: 'Nigeria' };
+
+  it('should return the country if found', async () => {
+    // Mock the findById method to return a specific country
+    (Country.findById as jest.Mock).mockResolvedValue(mockCountry);
+
+    // Call the service with a valid ID and assert it returns the expected country
+    const result = await getCountryByIdService(mockCountryId);
+    expect(result).toEqual(mockCountry);
+    expect(Country.findById).toHaveBeenCalledWith(mockCountryId);
+    expect(Country.findById).toHaveBeenCalledTimes(1);
   });
 });
 
