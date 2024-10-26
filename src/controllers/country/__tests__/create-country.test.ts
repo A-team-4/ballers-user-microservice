@@ -17,6 +17,7 @@ describe('create-country.ts', () => {
   let testServer: Server<typeof IncomingMessage, typeof ServerResponse>;
   const testPORT = generateRandomPortNumber();
   const body = { name: 'Nigeria' };
+  let createCountryServiceSpy: jest.SpyInstance;
   beforeAll(() => {
     testServer = app.listen(testPORT, async () => {
       //console.log(`Listening on PORT: ${testPORT}`);
@@ -44,11 +45,13 @@ describe('create-country.ts', () => {
     });
 
     it('should return status code 400 if country name already exists', async () => {
-      jest.spyOn(CountryService, 'createCountryService').mockRejectedValueOnce({
-        name: MONGO_SERVER_ERROR,
-        code: MONGOOSE_DUPLICATE_ERROR_CODE,
-        keyValue: body,
-      });
+      createCountryServiceSpy = jest
+        .spyOn(CountryService, 'createCountryService')
+        .mockRejectedValueOnce({
+          name: MONGO_SERVER_ERROR,
+          code: MONGOOSE_DUPLICATE_ERROR_CODE,
+          keyValue: body,
+        });
       const response = await request(app)
         .post(`/api/country`)
         .send(body)
@@ -59,11 +62,13 @@ describe('create-country.ts', () => {
           message: 'name already exists',
         }),
       );
+
+      expect(createCountryServiceSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should return status code 500 if an unexpected error occurs', async () => {
       const err_message = 'Unexpected Error';
-      jest
+      createCountryServiceSpy = jest
         .spyOn(CountryService, 'createCountryService')
         .mockImplementationOnce(() => {
           throw new Error(err_message);
@@ -78,22 +83,26 @@ describe('create-country.ts', () => {
           message: `${INTERNAL_SERVER_ERROR}: ${err_message}`,
         }),
       );
+
+      expect(createCountryServiceSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should return status code 200 if request successful', async () => {
-      jest
+      createCountryServiceSpy = jest
         .spyOn(CountryService, 'createCountryService')
         .mockResolvedValueOnce({ _id: 'asddd', name: body.name } as ICountry);
       const response = await request(app)
         .post(`/api/country`)
         .send(body)
-        .expect(200);
+        .expect(201);
 
       expect(response.body).toEqual(
         expect.objectContaining({
           message: COUNTRY_CREATED_MESSAGE,
         }),
       );
+
+      expect(createCountryServiceSpy).toHaveBeenCalledTimes(1);
     });
   });
 });
