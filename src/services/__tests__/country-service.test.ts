@@ -67,10 +67,13 @@ describe('updateCountryService', () => {
     (Country.findByIdAndUpdate as jest.Mock).mockResolvedValue(mockCountry);
 
     //call the service
-    const result = await updateCountryService('123', 'naija');
+    const result = await updateCountryService(
+      mockCountry._id,
+      mockCountry.name,
+    );
     expect(Country.findByIdAndUpdate).toHaveBeenCalledWith(
-      '123',
-      { name: 'naija' },
+      mockCountry._id,
+      { name: mockCountry.name },
       { new: true, runValidators: true },
     );
     expect(result).toEqual(mockCountry);

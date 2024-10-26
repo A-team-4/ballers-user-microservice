@@ -27,9 +27,10 @@ export const updateCountryontroller = async (
       res.status(404).json({ message: COUNTRY_NOT_FOUND });
       return;
     }
-
     res.status(200).json({ message: SUCCESS_MESSAGE, data: updatedCountry });
+    return;
   } catch (error: unknown) {
     apiErrorHandler(error, res);
+    return;
   }
 };
