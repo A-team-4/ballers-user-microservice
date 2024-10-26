@@ -22,7 +22,11 @@ export const updateCountryontroller = async (
 
   try {
     const validatedId = validator.escape(id.trim());
-    const updatedCountry = await updateCountryService(validatedId, name);
+    const sanitiziedName = validator.escape(name.trim());
+    const updatedCountry = await updateCountryService(
+      validatedId,
+      sanitiziedName,
+    );
     if (!updatedCountry) {
       res.status(404).json({ message: COUNTRY_NOT_FOUND });
       return;
