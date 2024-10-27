@@ -8,7 +8,7 @@ import { IncomingMessage, Server, ServerResponse } from 'http';
 import { generateRandomPortNumber } from '../../../utils/generateRandomPortNumber';
 import * as CountryService from '../../../services/country-service';
 
-// Test create country
+// Test delete country
 describe('delete-country.ts', () => {
   let testServer: Server<typeof IncomingMessage, typeof ServerResponse>;
   const testPORT = generateRandomPortNumber();

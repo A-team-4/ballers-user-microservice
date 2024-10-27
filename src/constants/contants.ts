@@ -6,3 +6,4 @@ export const MONGO_SERVER_ERROR = 'MongoServerError';
 export const INTERNAL_SERVER_ERROR = 'Internal Server Error';
 export const MONGOOSE_DUPLICATE_ERROR_CODE = 11000;
 export const SUCCESS_MESSAGE = 'success';
+export const COUNTRY_NOT_FOUND = 'Country not found';

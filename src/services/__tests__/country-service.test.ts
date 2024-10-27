@@ -2,6 +2,7 @@ import {
   createCountryService,
   deleteCountryService,
   getAllCountryService,
+  updateCountryService,
 } from '../../services/country-service';
 import { Country } from '../../models/country';
 
@@ -54,5 +55,35 @@ describe('deleteCountryService', () => {
     await deleteCountryService(mockCountryId);
 
     expect(Country.findByIdAndDelete).toHaveBeenCalledTimes(1);
+  });
+});
+
+// Test update a country
+describe('updateCountryService', () => {
+  it('should update and return the updated country', async () => {
+    const mockCountry = { _id: '123', name: 'naija' };
+
+    // mock the find and update country method to return mock countries
+    (Country.findByIdAndUpdate as jest.Mock).mockResolvedValue(mockCountry);
+
+    //call the service
+    const result = await updateCountryService(
+      mockCountry._id,
+      mockCountry.name,
+    );
+    expect(Country.findByIdAndUpdate).toHaveBeenCalledWith(
+      mockCountry._id,
+      { name: mockCountry.name },
+      { new: true, runValidators: true },
+    );
+    expect(result).toEqual(mockCountry);
+  });
+
+  // Test for non-existent Id
+  it('should return null if the country does not exist', async () => {
+    (Country.findByIdAndUpdate as jest.Mock).mockResolvedValue(null);
+
+    const result = await updateCountryService('null', 'naija');
+    expect(result).toBeNull();
   });
 });

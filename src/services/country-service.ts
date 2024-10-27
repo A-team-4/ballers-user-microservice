@@ -17,3 +17,15 @@ export const deleteCountryService = async (id: string): Promise<void> => {
   await Country.findByIdAndDelete(id);
   return;
 };
+
+export const updateCountryService = async (
+  id: string,
+  newName: string,
+): Promise<ICountry | null> => {
+  const updatedCountry = await Country.findByIdAndUpdate(
+    id,
+    { name: newName },
+    { new: true, runValidators: true },
+  );
+  return updatedCountry;
+};
