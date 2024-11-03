@@ -4,29 +4,15 @@ import {
   INTERNAL_SERVER_ERROR,
   SUCCESS_MESSAGE,
 } from '../../../constants/contants';
-import { IncomingMessage, Server, ServerResponse } from 'http';
-import { generateRandomPortNumber } from '../../../utils/generateRandomPortNumber';
 import * as CountryService from '../../../services/country-service';
 
 // Test delete country
 describe('delete-country.ts', () => {
-  let testServer: Server<typeof IncomingMessage, typeof ServerResponse>;
-  const testPORT = generateRandomPortNumber();
   const id = 'ashhja';
   let deleteCountryServiceSpy: jest.SpyInstance;
-  beforeAll(() => {
-    testServer = app.listen(testPORT, async () => {
-      //console.log(`Listening on PORT: ${testPORT}`);
-    });
-  });
 
   afterEach(() => {
     jest.clearAllMocks();
-  });
-
-  afterAll(async () => {
-    testServer.close();
-    testServer.closeAllConnections();
   });
 
   describe('DELETE COUNTRY /', () => {

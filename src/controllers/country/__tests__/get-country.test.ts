@@ -4,27 +4,13 @@ import {
   SUCCESS_MESSAGE,
   INTERNAL_SERVER_ERROR,
 } from '../../../constants/contants';
-import { IncomingMessage, Server, ServerResponse } from 'http';
-import { generateRandomPortNumber } from '../../../utils/generateRandomPortNumber';
 import * as CountryService from '../../../services/country-service';
 import { ICountry } from '../../../interfaces/country.interface';
 
 // Test get all country
 describe('get-country.ts', () => {
-  let testServer: Server<typeof IncomingMessage, typeof ServerResponse>;
-  const testPORT = generateRandomPortNumber();
-
-  beforeAll(() => {
-    testServer = app.listen(testPORT, async () => {});
-  });
-
   afterEach(() => {
     jest.clearAllMocks();
-  });
-
-  afterAll(async () => {
-    testServer.close();
-    testServer.closeAllConnections();
   });
 
   describe('GET /country', () => {

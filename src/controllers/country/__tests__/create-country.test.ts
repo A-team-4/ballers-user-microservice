@@ -7,30 +7,16 @@ import {
   MONGOOSE_DUPLICATE_ERROR_CODE,
   NAME_REQUIRED,
 } from '../../../constants/contants';
-import { IncomingMessage, Server, ServerResponse } from 'http';
-import { generateRandomPortNumber } from '../../../utils/generateRandomPortNumber';
 import * as CountryService from '../../../services/country-service';
 import { ICountry } from '../../../interfaces/country.interface';
 
 // Test create country
 describe('create-country.ts', () => {
-  let testServer: Server<typeof IncomingMessage, typeof ServerResponse>;
-  const testPORT = generateRandomPortNumber();
   const body = { name: 'Nigeria' };
   let createCountryServiceSpy: jest.SpyInstance;
-  beforeAll(() => {
-    testServer = app.listen(testPORT, async () => {
-      //console.log(`Listening on PORT: ${testPORT}`);
-    });
-  });
 
   afterEach(() => {
     jest.clearAllMocks();
-  });
-
-  afterAll(async () => {
-    testServer.close();
-    testServer.closeAllConnections();
   });
 
   describe('POST /', () => {
