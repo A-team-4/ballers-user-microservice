@@ -6,30 +6,16 @@ import {
   NAME_REQUIRED,
   COUNTRY_NOT_FOUND,
 } from '../../../constants/contants';
-import { IncomingMessage, Server, ServerResponse } from 'http';
-import { generateRandomPortNumber } from '../../../utils/generateRandomPortNumber';
 import * as CountryService from '../../../services/country-service';
 import { ICountry } from '../../../interfaces/country.interface';
 
 // Test Update country Controller
 describe('update-country.ts', () => {
-  let testServer: Server<typeof IncomingMessage, typeof ServerResponse>;
-  const testPORT = generateRandomPortNumber();
-
   const id = '123';
   const updatedCountry = { name: 'Nigeria' };
 
-  beforeAll(() => {
-    testServer = app.listen(testPORT, async () => {});
-  });
-
   afterEach(() => {
     jest.clearAllMocks();
-  });
-
-  afterAll(async () => {
-    testServer.close();
-    testServer.closeAllConnections();
   });
 
   describe('PUT /country/:id', () => {
