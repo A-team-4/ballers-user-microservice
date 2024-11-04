@@ -5,6 +5,8 @@ import {
   updateCountryService,
 } from '../../services/country-service';
 import { Country } from '../../models/country';
+import { ICountry } from '../../interfaces/country.interface';
+import mongoose from 'mongoose';
 
 // Test create country service
 describe('create-country.ts', () => {
@@ -29,7 +31,10 @@ jest.mock('../../models/country');
 
 describe('getAllCountriesService', () => {
   it('should return all countries', async () => {
-    const mockCountries = [{ name: 'Nigeria' }, { name: 'Ghana' }];
+    const mockCountries = [
+      { name: 'Nigeria' },
+      { name: 'Ghana' },
+    ] as ICountry[];
 
     // mock the find country method to return mock countries
     (Country.find as jest.Mock).mockResolvedValue(mockCountries);
@@ -46,7 +51,7 @@ describe('getAllCountriesService', () => {
 //Test delete a country
 describe('deleteCountryService', () => {
   it('should delete a country', async () => {
-    const mockCountryId = 'id';
+    const mockCountryId = new mongoose.Types.ObjectId().toString();
 
     // mock the find country method to return mock countries
     (Country.findByIdAndDelete as jest.Mock).mockResolvedValue(true);
@@ -59,31 +64,87 @@ describe('deleteCountryService', () => {
 });
 
 // Test update a country
+// Mock the Country model
+jest.mock('../../models/country');
+
 describe('updateCountryService', () => {
-  it('should update and return the updated country', async () => {
-    const mockCountry = { _id: '123', name: 'naija' };
-
-    // mock the find and update country method to return mock countries
-    (Country.findByIdAndUpdate as jest.Mock).mockResolvedValue(mockCountry);
-
-    //call the service
-    const result = await updateCountryService(
-      mockCountry._id,
-      mockCountry.name,
-    );
-    expect(Country.findByIdAndUpdate).toHaveBeenCalledWith(
-      mockCountry._id,
-      { name: mockCountry.name },
-      { new: true, runValidators: true },
-    );
-    expect(result).toEqual(mockCountry);
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  // Test for non-existent Id
+  it('should update and return the updated country if the ID is valid', async () => {
+    const mockCountry: ICountry = {
+      _id: new mongoose.Types.ObjectId().toString(),
+      name: 'Nigeria',
+    } as ICountry;
+
+    // Mock the findByIdAndUpdate method to return the mock country
+    (Country.findByIdAndUpdate as jest.Mock).mockResolvedValue(mockCountry);
+
+    // Call the service
+    const result = await updateCountryService(
+      mockCountry._id as string,
+      'New Nigeria',
+    );
+
+    // Assert: Check if the service returns the updated data
+    expect(result).toEqual(mockCountry);
+    expect(Country.findByIdAndUpdate).toHaveBeenCalledWith(
+      mockCountry._id,
+      { name: 'New Nigeria' },
+      { new: true, runValidators: true },
+    );
+    expect(Country.findByIdAndUpdate).toHaveBeenCalledTimes(1);
+  });
+
   it('should return null if the country does not exist', async () => {
+    const validNonexistentId = new mongoose.Types.ObjectId().toString();
+
+    // Mock the findByIdAndUpdate method to return null
     (Country.findByIdAndUpdate as jest.Mock).mockResolvedValue(null);
 
-    const result = await updateCountryService('null', 'naija');
+    const result = await updateCountryService(
+      validNonexistentId,
+      'New Country',
+    );
+
+    // Assert: Check if the service returns null when the country is not found
     expect(result).toBeNull();
+    expect(Country.findByIdAndUpdate).toHaveBeenCalledWith(
+      validNonexistentId,
+      { name: 'New Country' },
+      { new: true, runValidators: true },
+    );
+    expect(Country.findByIdAndUpdate).toHaveBeenCalledTimes(1);
+  });
+
+  it('should throw an error if an invalid ID format is provided', async () => {
+    const invalidId = 'invalid_id_format';
+
+    // Call the service with the invalid ID and expect it to throw an error
+    await expect(
+      updateCountryService(invalidId, 'Invalid Country'),
+    ).rejects.toThrow('Invalid ID format');
+    expect(Country.findByIdAndUpdate).not.toHaveBeenCalled();
+  });
+
+  it('should throw an error if an unexpected error occurs', async () => {
+    const errorMessage = 'Database connection error';
+    const validId = new mongoose.Types.ObjectId().toString();
+
+    // Mock the findByIdAndUpdate method to throw an error
+    (Country.findByIdAndUpdate as jest.Mock).mockRejectedValueOnce(
+      new Error(errorMessage),
+    );
+
+    await expect(
+      updateCountryService(validId, 'Country with Error'),
+    ).rejects.toThrow(errorMessage);
+    expect(Country.findByIdAndUpdate).toHaveBeenCalledWith(
+      validId,
+      { name: 'Country with Error' },
+      { new: true, runValidators: true },
+    );
+    expect(Country.findByIdAndUpdate).toHaveBeenCalledTimes(1);
   });
 });
