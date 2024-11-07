@@ -19,7 +19,7 @@ describe('update-state.ts', () => {
   const countryId = new mongoose.Types.ObjectId();
   const mockInput: StateInput = {
     name: 'Updated State',
-    countryId: countryId.toString(),
+    countryId: countryId,
   };
 
   const mockState: Partial<IState> = {
