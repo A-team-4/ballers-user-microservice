@@ -54,11 +54,8 @@ describe('get-state-by-id.ts', () => {
       // Mock the service to throw an error
       jest.spyOn(StateService, 'getStateByIdService').mockRejectedValue(error);
 
-      // Mock the apiErrorHandler function
-      //const mockApiErrorHandler = jest.spyOn(apiErrorHandlerModule, 'apiErrorHandler');
       const response = await request(app).get(`/api/state/1`).expect(500);
 
-      //expect(mockApiErrorHandler).toHaveBeenCalledWith(error, expect.anything());
       expect(response.body).toEqual({
         message: `${INTERNAL_SERVER_ERROR}: ${error.message}`,
       });
