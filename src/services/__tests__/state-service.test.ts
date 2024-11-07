@@ -3,6 +3,7 @@ import {
   createState,
   deleteStateService,
   getStateByIdService,
+  updateStateService,
 } from '../../services/state-service';
 import { State } from '../../models/state';
 import { IState } from '../../interfaces/state.interface';
@@ -20,6 +21,7 @@ describe('getStateByIdService', () => {
     const mockState: IState = {
       _id: new mongoose.Types.ObjectId().toString(),
       name: 'Lagos',
+      countryId: new mongoose.Types.ObjectId(),
     } as IState;
 
     // Mock the findById method to return the mock state
@@ -128,3 +130,78 @@ describe('deleteStateService', () => {
     expect(State.findByIdAndDelete).toHaveBeenCalledTimes(1);
   });
 });
+
+describe('updateStateService', () => {
+  const mockState: IState = {
+    _id: new mongoose.Types.ObjectId().toString(),
+    name: 'Lagos',
+    countryId: new mongoose.Types.ObjectId(),
+  } as IState;
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should return the updated state if it exists', async () => {
+    // Mock the findById method to return the mock state
+    (State.findByIdAndUpdate as jest.Mock).mockResolvedValueOnce(mockState);
+
+    const result = await updateStateService(mockState._id as string, mockState);
+
+    // Assert: Check if the service returns the correct data
+    expect(result).toEqual(mockState);
+    expect(State.findByIdAndUpdate).toHaveBeenCalledWith(
+      mockState._id,
+      mockState,
+      { new: true, runValidators: true },
+    );
+    expect(State.findByIdAndUpdate).toHaveBeenCalledTimes(1);
+  });
+
+  it('should return null if the state does not exist', async () => {
+    const validNonexistentId = new mongoose.Types.ObjectId().toString();
+
+    // Mock the findById method to return null
+    (State.findById as jest.Mock).mockResolvedValue(null);
+
+    const result = await updateStateService(validNonexistentId, mockState);
+
+    // Assert: Check if the service returns null when state is not found
+    expect(result).toBeUndefined();
+    expect(State.findByIdAndUpdate).toHaveBeenCalledWith(
+      validNonexistentId,
+      mockState,
+      { new: true, runValidators: true },
+    );
+    expect(State.findByIdAndUpdate).toHaveBeenCalledTimes(1);
+  });
+
+  it('should throw an error if an invalid ID format is provided', async () => {
+    const invalidId = 'invalid_id_format';
+
+    // Call the service with the invalid ID and expect it to throw an error
+    await expect(updateStateService(invalidId, mockState)).rejects.toThrow(
+      'Invalid ID format',
+    );
+    expect(State.findByIdAndUpdate).not.toHaveBeenCalled();
+  });
+
+  it('should throw an error if an unexpected error occurs', async () => {
+    const errorMessage = 'Database connection error';
+    const validId = new mongoose.Types.ObjectId().toString();
+
+    // Mock the findById method to throw an error
+    (State.findByIdAndUpdate as jest.Mock).mockRejectedValueOnce(
+      new Error(errorMessage),
+    );
+
+    await expect(updateStateService(validId, mockState)).rejects.toThrow(
+      errorMessage,
+    );
+    expect(State.findByIdAndUpdate).toHaveBeenCalledWith(validId, mockState, {
+      new: true,
+      runValidators: true,
+    });
+    expect(State.findByIdAndUpdate).toHaveBeenCalledTimes(1);
+  });
+});
+

@@ -10,3 +10,5 @@ export const COUNTRY_NOT_FOUND = 'Country not found';
 export const STATE_NOT_FOUND = 'State not found';
 export const STATE_CREATED_MESSAGE = 'state created successfully';
 export const INVALID_ID = 'Invalid id';
+export const INVALID_COUNTRY_ID = 'Invalid Country ID';
+export const INVALID_STATE_ID = 'Invalid STATE ID';
