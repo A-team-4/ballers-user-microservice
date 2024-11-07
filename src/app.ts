@@ -2,10 +2,12 @@ import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import { URL_NOT_FOUND } from './constants/contants';
 import { countryRoute } from './routes/country-routes';
+import { stateRoute } from './routes/state-routes';
 
 const app: express.Application = express();
 app.use(bodyParser.json()); // To parse JSON bodies
 app.use('/api', countryRoute());
+app.use('/api', stateRoute());
 
 //404 not found
 app.use((req: Request, res: Response) => {
