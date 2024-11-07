@@ -21,6 +21,16 @@ export const createState = async (
   return newstate;
 };
 
+export const getStateByIdService = async (
+  id: string,
+): Promise<IState | null> => {
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new Error('Invalid ID format');
+  }
+  const state = await State.findById(id).exec();
+  return state;
+};
+
 export const deleteStateService = async (id: string): Promise<void> => {
   await State.findByIdAndDelete(id);
   return;

@@ -9,13 +9,16 @@ export const deleteStateController = async (
   res: Response,
 ): Promise<void> => {
   const id = req.params.id;
+  console.log('This is Id ' + id);
 
   try {
     const validatedId = validator.escape(id.trim());
+    console.log('Ballers innit');
     await deleteStateService(validatedId);
     res.status(200).json({ message: SUCCESS_MESSAGE });
     return;
   } catch (e: unknown) {
+    console.log('error', e);
     apiErrorHandler(e, res);
     return;
   }

@@ -19,7 +19,7 @@ describe('delete-state.ts', () => {
     // Mock deleteStateService to resolve successfully
     deleteStateServiceSpy = jest
       .spyOn(StateService, 'deleteStateService')
-      .mockResolvedValueOnce();
+      .mockImplementation();
 
     // Send the request with the valid id
     const response = await request(app).delete(`/api/state/${id}`).expect(200);
