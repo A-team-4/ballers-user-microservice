@@ -13,9 +13,6 @@ export const getStateByIdController = async (
     console.log(req.params);
     const { id } = req.params;
     const state = await getStateByIdService(validator.escape(id));
-    console.log('STATE:', state);
-    console.log('STATE:', validator.escape(id));
-
     if (!state) {
       res.status(404).json({ message: STATE_NOT_FOUND });
       return;
@@ -23,7 +20,6 @@ export const getStateByIdController = async (
     res.status(200).json({ message: SUCCESS_MESSAGE, data: state });
     return;
   } catch (e: unknown) {
-    console.log(e);
     apiErrorHandler(e, res);
     return;
   }
