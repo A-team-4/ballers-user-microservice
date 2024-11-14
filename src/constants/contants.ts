@@ -12,3 +12,5 @@ export const STATE_CREATED_MESSAGE = 'state created successfully';
 export const INVALID_ID = 'Invalid id';
 export const INVALID_COUNTRY_ID = 'Invalid Country ID';
 export const INVALID_STATE_ID = 'Invalid STATE ID';
+export const POSITION_TYPE_CREATED = 'Position type created';
+export const ID_NOT_FOUND = 'ID not found';
