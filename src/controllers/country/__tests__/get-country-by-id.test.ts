@@ -7,29 +7,16 @@ import {
   COUNTRY_NOT_FOUND,
   INTERNAL_SERVER_ERROR,
 } from '../../../constants/contants';
-import { IncomingMessage, Server, ServerResponse } from 'http';
-import { generateRandomPortNumber } from '../../../utils/generateRandomPortNumber';
 import * as CountryService from '../../../services/country-service';
 import { ICountry } from '../../../interfaces/country.interface';
 
 describe('get-country-by-id.ts', () => {
-  let testServer: Server<typeof IncomingMessage, typeof ServerResponse>;
-  const testPORT = generateRandomPortNumber();
   const validId = '12345';
 
   let getCountryByIdServiceSpy: jest.SpyInstance;
 
-  beforeAll(() => {
-    testServer = app.listen(testPORT, async () => {});
-  });
-
   afterEach(() => {
     jest.clearAllMocks();
-  });
-
-  afterAll(async () => {
-    testServer.close();
-    testServer.closeAllConnections();
   });
 
   describe('GET /country/:id', () => {
