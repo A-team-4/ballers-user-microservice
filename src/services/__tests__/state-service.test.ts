@@ -3,6 +3,7 @@ import {
   createState,
   deleteStateService,
   getStateByIdService,
+  getStateByCountryIdService,
   updateStateService,
 } from '../../services/state-service';
 import { State } from '../../models/state';
@@ -75,6 +76,82 @@ describe('getStateByIdService', () => {
     await expect(getStateByIdService(validId)).rejects.toThrow(errorMessage);
     expect(State.findById).toHaveBeenCalledWith(validId);
     expect(State.findById).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('getStateByCountryIdService', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should return an array of states if states exist for the given country ID', async () => {
+    const mockCountryId = new mongoose.Types.ObjectId().toString();
+    const mockStates: IState[] = [
+      {
+        _id: new mongoose.Types.ObjectId().toString(),
+        name: 'Lagos',
+        countryId: mockCountryId,
+      } as unknown as IState,
+      {
+        _id: new mongoose.Types.ObjectId().toString(),
+        name: 'Abuja',
+        countryId: mockCountryId,
+      } as unknown as IState,
+    ];
+
+    // Mock the find method to return the mock states
+    (State.find as jest.Mock).mockReturnValue({
+      exec: jest.fn().mockResolvedValueOnce(mockStates),
+    });
+
+    const result = await getStateByCountryIdService(mockCountryId);
+
+    // Assert: Check if the service returns the correct data
+    expect(result).toEqual(mockStates);
+    expect(State.find).toHaveBeenCalledWith({ countryId: mockCountryId });
+    expect(State.find).toHaveBeenCalledTimes(1);
+  });
+
+  it('should return an empty array if no states exist for the given country ID', async () => {
+    const mockCountryId = new mongoose.Types.ObjectId().toString();
+
+    // Mock the find method to return an empty array
+    (State.find as jest.Mock).mockReturnValue({
+      exec: jest.fn().mockResolvedValueOnce([]),
+    });
+
+    const result = await getStateByCountryIdService(mockCountryId);
+
+    // Assert: Check if the service returns an empty array when no states are found
+    expect(result).toEqual([]);
+    expect(State.find).toHaveBeenCalledWith({ countryId: mockCountryId });
+    expect(State.find).toHaveBeenCalledTimes(1);
+  });
+
+  it('should throw an error if an invalid Country ID format is provided', async () => {
+    const invalidCountryId = 'invalid_id_format';
+
+    // Call the service with the invalid country ID and expect it to throw an error
+    await expect(getStateByCountryIdService(invalidCountryId)).rejects.toThrow(
+      'Invalid Country ID format',
+    );
+    expect(State.find).not.toHaveBeenCalled();
+  });
+
+  it('should throw an error if an unexpected error occurs', async () => {
+    const mockCountryId = new mongoose.Types.ObjectId().toString();
+    const errorMessage = 'Database connection error';
+
+    // Mock the find method to throw an error
+    (State.find as jest.Mock).mockReturnValue({
+      exec: jest.fn().mockRejectedValueOnce(new Error(errorMessage)),
+    });
+
+    await expect(getStateByCountryIdService(mockCountryId)).rejects.toThrow(
+      errorMessage,
+    );
+    expect(State.find).toHaveBeenCalledWith({ countryId: mockCountryId });
+    expect(State.find).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -204,4 +281,3 @@ describe('updateStateService', () => {
     expect(State.findByIdAndUpdate).toHaveBeenCalledTimes(1);
   });
 });
-
