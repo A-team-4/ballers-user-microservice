@@ -7,6 +7,7 @@ const PositionTypeSchema = new Schema<IPositionTypes>({
     type: String,
     required: [true, 'Position name is required'],
     trim: true,
+    unique: true,
     set: (value: string) => validator.escape(value),
   },
 });

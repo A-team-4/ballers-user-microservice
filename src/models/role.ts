@@ -6,7 +6,8 @@ const RoleTypeSchema = new Schema<IRoleType>({
   type: {
     type: String,
     required: [true, 'Role type is required'],
-    trime: true,
+    trim: true,
+    unique: true,
     set: (value: string) => validator.escape(value),
   },
 });
