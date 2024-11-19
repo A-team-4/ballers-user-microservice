@@ -10,7 +10,7 @@ const stateRoute = (): Router => {
   router.post('/state', createStateController);
   router.delete('/state/:id', deleteStateController);
   router.get('/state/:id', getStateByIdController);
-  router.get('/state/:countryId', getStateByCountryIdController);
+  router.get('/state/country/:id', getStateByCountryIdController);
   router.put('/state/:id', updateStateController);
   return router;
 };

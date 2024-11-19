@@ -9,8 +9,8 @@ export const getStateByCountryIdController = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { countryId } = req.params;
-    const sanitizedCountryId = validator.escape(countryId);
+    const { id } = req.params;
+    const sanitizedCountryId = validator.escape(id);
     const states = await getStateByCountryIdService(sanitizedCountryId);
 
     if (!states || states.length === 0) {

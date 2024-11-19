@@ -8,17 +8,16 @@ import {
 import * as StateService from '../../../services/state-service';
 import { IState } from '../../../interfaces/state.interface';
 
-/* // Mocking the state-service and apiErrorHandler
-jest.mock('../../../services/state-service'); */
-
 describe('getStateByCountryController', () => {
+  const mockCountryId = '648c1234abcd5678ef90abcd';
+  let getStateByCountryIdServiceSpy: jest.SpyInstance;
+
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('GET /state/:countryId', () => {
+  describe('GET /state/country/:id', () => {
     it('should return status code 200 and state data if states exist for the given country', async () => {
-      const mockCountryId = '1890ab';
       const mockStates = [
         {
           _id: '1',
@@ -32,55 +31,56 @@ describe('getStateByCountryController', () => {
         } as unknown as IState,
       ] as IState[];
 
-      // Mock the service response
-      jest
+      getStateByCountryIdServiceSpy = jest
         .spyOn(StateService, 'getStateByCountryIdService')
         .mockResolvedValueOnce(mockStates);
 
       const response = await request(app)
-        .get(`/state/:${mockCountryId}`)
+        .get(`/api/state/country/${mockCountryId}`)
         .expect(200);
 
       expect(response.body).toEqual({
         message: SUCCESS_MESSAGE,
         data: mockStates,
       });
+      expect(getStateByCountryIdServiceSpy).toHaveBeenCalledWith(mockCountryId);
+      expect(getStateByCountryIdServiceSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should return status code 404 if no states are found for the given country ID', async () => {
-      const mockCountryId = '1234567890abcdef12345678';
-
-      // Mock the service to return an empty array
-      jest
+      getStateByCountryIdServiceSpy = jest
         .spyOn(StateService, 'getStateByCountryIdService')
-        .mockResolvedValueOnce([]);
+        .mockResolvedValueOnce(null);
 
       const response = await request(app)
-        .get(`/state/:${mockCountryId}`)
+        .get(`/api/state/country/${mockCountryId}`)
         .expect(404);
 
       expect(response.body).toEqual({
         message: STATE_NOT_FOUND,
       });
+      expect(getStateByCountryIdServiceSpy).toHaveBeenCalledWith(mockCountryId);
+      expect(getStateByCountryIdServiceSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should return status code 500  if an unexpected error occurs', async () => {
-      const mockCountryId = '1234567890abcdef12345678';
-      const errMessage = 'Unexpected error';
-      const error = new Error(errMessage);
+      const errMessage = 'Invalid ID format';
 
-      // Mock the service to throw an error
-      jest
+      getStateByCountryIdServiceSpy = jest
         .spyOn(StateService, 'getStateByCountryIdService')
-        .mockRejectedValueOnce(error);
+        .mockImplementationOnce(() => {
+          throw new Error(errMessage);
+        });
 
       const response = await request(app)
-        .get(`/state/:${mockCountryId}`)
+        .get(`/api/state/country/${mockCountryId}`)
         .expect(500);
 
       expect(response.body).toEqual({
-        message: `${INTERNAL_SERVER_ERROR}: ${error.message}`,
+        message: `${INTERNAL_SERVER_ERROR}: ${errMessage}`,
       });
+      expect(getStateByCountryIdServiceSpy).toHaveBeenCalledWith(mockCountryId);
+      expect(getStateByCountryIdServiceSpy).toHaveBeenCalledTimes(1);
     });
   });
 });

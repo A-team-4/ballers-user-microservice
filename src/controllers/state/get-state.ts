@@ -10,7 +10,6 @@ export const getStateByIdController = async (
   res: Response,
 ): Promise<void> => {
   try {
-    console.log(req.params);
     const { id } = req.params;
     const state = await getStateByIdService(validator.escape(id));
     if (!state) {
